@@ -1,6 +1,6 @@
 ---
 
-git## Principios SOLID aplicados
+## Principios SOLID aplicados
 
 A continuación se describen algunos principios SOLID implementados en el código:
 
