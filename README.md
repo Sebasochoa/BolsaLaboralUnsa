@@ -1,109 +1,6 @@
-# Sistema de Bolsa Laboral - UNSA
-
-## Propósito
-
-Este sistema tiene como objetivo conectar a los **estudiantes de la UNSA** con **empresas** que ofrecen oportunidades laborales, a través de una plataforma digital donde los alumnos puedan:
-
-- Subir y administrar su currículum (CV)
-- Postularse a ofertas de empleo publicadas por empresas registradas
-- Visualizar el estado de sus postulaciones
-- Explorar ofertas laborales por filtros de carrera, modalidad, etc.
-
-Además, el sistema permite que **administradores** gestionen empresas y ofertas laborales, y que **profesores** puedan visualizar los currículums de los estudiantes para brindarles apoyo o recomendación externa.
-
 ---
 
-## Funcionalidades de Alto Nivel (Casos de Uso)
-
-- 🎓 Alumno:
-  - Buscar ofertas laborales
-  - Postularse a una oferta laboral
-  - Subir, ver y gestionar currículums
-  - Ver historial de postulaciones
-
-- 🧑‍🏫 Profesor:
-  - Visualizar currículums de estudiantes
-
-- 🧑‍💼 Administrador:
-  - Registrar empresas
-  - Registrar y administrar ofertas laborales
-  - Ver reportes o estadísticas (opcional)
-
-- 🏢 Empresa:
-  - Publicar ofertas laborales (por medio del admin)
-
-📌 **Diagrama de Casos de Uso UML:**  
-![Casos de Uso](./docs/Diagrama_casos_de_uso.png)
-
----
-
-## Prototipo / GUI (Interfaz de Usuario)
-
-Se cuenta con un prototipo visual que muestra las pantallas principales del sistema:
-
-- Vista alumno: listado de ofertas, formulario de postulación, carga de CV
-- Vista administrador: formularios para registrar empresa y oferta
-- Vista empresa (pasiva): vista de ofertas publicadas
-- Vista profesor: explorador de CVs
-
-📌 **Enlace del prototipo: https://www.canva.com/design/DAGpRL3kFGQ/8asF3UKgim2lbnSpreqgiQ/edit?utm_content=DAGpRL3kFGQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton **  
-
----
-
-## Modelo de Dominio
-
-### Diagrama de Clases
-
-Incluye entidades como:
-- Usuario (Alumno, Profesor, Administrador)
-- Empresa
-- OfertaLaboral
-- Postulación
-- Curriculum
-
-📌 **Imagen del diagrama de clases UML:**  
-![Modelo de Dominio](./docs/Diagrama_de_clases.png)
-
----
-
-### 🔸 Módulos del dominio (vista desde el negocio)
-
-| Módulo | Responsabilidad |
-|--------|------------------|
-| Gestión de Usuarios | Registro, autenticación y roles |
-| Gestión de Currículums | Subida, visualización y uso en postulaciones |
-| Gestión de Empresas | Registro y visualización de empresas |
-| Gestión de Ofertas | Publicación y consulta de ofertas laborales |
-| Gestión de Postulaciones | Aplicación del alumno a ofertas |
-
----
-
-## 🏗️ Vista General de Arquitectura
-
-### 🔹 Diagrama de Paquetes
-
-El sistema está dividido en capas según la arquitectura por capas:
-
-- `presentacion`: vistas y controladores
-- `servicios`: lógica de aplicación
-- `dominio`: entidades de negocio
-- `repositorio`: acceso a datos
-
-📌 **Diagrama de Paquetes:**  
-![Diagrama de Paquetes](./docs/Diagrama_de_paquetes.png)
-
----
-
-## Requisitos Técnicos
-
-- Lenguaje: JAVA / SPRING BOOT / etc.
-- Base de datos: PostgreSQL
-- ORM: JPA
-- Arquitectura: DDD + MVC + ORM
-
----
-
-## Principios SOLID aplicados
+git## Principios SOLID aplicados
 
 A continuación se describen algunos principios SOLID implementados en el código:
 
@@ -112,15 +9,15 @@ El servicio `VerOfertasService` se encarga exclusivamente de obtener las ofertas
 ```java
 @Service
 public class VerOfertasService {
-    private final OfertaRepository ofertaRepository;
+private final OfertaRepository ofertaRepository;
 
-    public VerOfertasService(OfertaRepository ofertaRepository) {
-        this.ofertaRepository = ofertaRepository;
-    }
+public VerOfertasService(OfertaRepository ofertaRepository) {
+this.ofertaRepository = ofertaRepository;
+}
 
-    public List<OfertaLaboral> ejecutar() {
-        return ofertaRepository.listarPorEstado(EstadoOferta.ACTIVA);
-    }
+public List<OfertaLaboral> ejecutar() {
+return ofertaRepository.listarPorEstado(EstadoOferta.ACTIVA);
+}
 }
 ```
 
@@ -129,15 +26,15 @@ public class VerOfertasService {
 ```java
 @Service
 public class RegistrarOfertaService {
-    private final OfertaRepository ofertaRepository;
-    private final EmpresaRepository empresaRepository;
+private final OfertaRepository ofertaRepository;
+private final EmpresaRepository empresaRepository;
 
-    public RegistrarOfertaService(OfertaRepository ofertaRepository,
-                                  EmpresaRepository empresaRepository) {
-        this.ofertaRepository = ofertaRepository;
-        this.empresaRepository = empresaRepository;
-    }
-    // ...
+public RegistrarOfertaService(OfertaRepository ofertaRepository,
+EmpresaRepository empresaRepository) {
+this.ofertaRepository = ofertaRepository;
+this.empresaRepository = empresaRepository;
+}
+// ...
 }
 ```
 
@@ -146,12 +43,67 @@ public class RegistrarOfertaService {
 ```java
 @Service
 public class InactivarOfertaService {
-    public Optional<OfertaLaboral> ejecutar(UUID id) {
-        return ofertaRepository.buscarPorId(id)
-                .map(oferta -> {
-                    oferta.setEstado(EstadoOferta.INACTIVA);
-                    return ofertaRepository.guardar(oferta);
-                });
-    }
+public Optional<OfertaLaboral> ejecutar(UUID id) {
+return ofertaRepository.buscarPorId(id)
+.map(oferta -> {
+oferta.setEstado(EstadoOferta.INACTIVA);
+return ofertaRepository.guardar(oferta);
+});
+}
 }
 ```
+## Principios Clean Code aplicados
+
+A continuación se presentan algunas prácticas de **Clean Code** aplicadas en el proyecto junto con los fragmentos de código correspondientes.
+
+### Nombres significativos
+La entidad `OfertaLaboral` emplea nombres claros para sus atributos, facilitando la comprensión del dominio.
+```java
+@Entity
+public class OfertaLaboral {
+private LocalDateTime fechaPublicacion;
+private EstadoOferta estado;
+// ...
+}
+```
+
+### Funciones pequeñas
+Los servicios mantienen métodos cortos y con una única responsabilidad, por ejemplo `ejecutar()` en `VerOfertasService`.
+```java
+public List<OfertaLaboral> ejecutar() {
+return ofertaRepository.listarPorEstado(EstadoOferta.ACTIVA);
+}
+```
+
+### Comentarios explicativos
+Se añaden comentarios de propósito en clases clave como en `EmpresaNoEncontradaException`.
+```java
+/** Se lanza cuando no se encuentra una empresa al registrar una oferta. */
+public class EmpresaNoEncontradaException extends RuntimeException { ... }
+```
+
+### Estructura de código fuente clara
+El código se organiza por capas: controladores en `api.controllers`, lógica en `application.services` y persistencia en `infrastructure.repository`.
+
+### Objetos bien definidos
+`OfertaLaboral` modela de forma explícita una oferta con sus campos y relaciones.
+```java
+@ManyToOne(fetch = FetchType.LAZY)
+private Empresa empresa;
+```
+
+### Tratamiento de errores centralizado
+`GlobalExceptionHandler` captura excepciones de la aplicación y devuelve respuestas adecuadas.
+```java
+@ExceptionHandler(EmpresaNoEncontradaException.class)
+public ResponseEntity<String> handleEmpresaNoEncontrada(...){
+return ResponseEntity.notFound().build();
+}
+```
+
+### Clases con una única responsabilidad
+`RegistrarOfertaService` se centra únicamente en la creación de ofertas.
+```java
+public class RegistrarOfertaService {
+public OfertaLaboral ejecutar(UUID empresaId, OfertaLaboral oferta) { ... }
+}
